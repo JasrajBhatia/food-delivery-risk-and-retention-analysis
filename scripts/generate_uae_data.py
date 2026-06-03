@@ -222,11 +222,11 @@ AREA_PRICE_TIER = {
 TRAFFIC_LEVELS = ["Low", "Medium", "High", "Very High"]
 TRAFFIC_WEIGHTS = [0.25, 0.40, 0.25, 0.10]
 
-DRIVER_VEHICLES = ["Motorcycle", "Bicycle", "Car"]
-DRIVER_VEHICLE_WEIGHTS = [0.65, 0.10, 0.25]
+DRIVER_VEHICLES = ["Motorcycle", "Bicycle"]
+DRIVER_VEHICLE_WEIGHTS = [0.85, 0.15]
 
-PAYMENT_METHODS = ["Credit Card", "Cash", "Apple Pay", "Careem Pay", "Talabat Pay"]
-PAYMENT_WEIGHTS = [0.35, 0.20, 0.20, 0.10, 0.15]
+PAYMENT_METHODS = ["Credit Card", "Debit Card", "Apple Pay", "In-App Wallet"]
+PAYMENT_WEIGHTS = [0.40, 0.10, 0.35, 0.15]
 
 ORDER_STATUSES = ["Delivered", "Cancelled", "In Transit"]
 
@@ -319,7 +319,7 @@ def get_order_quality_risk(duration, distance, traffic, vehicle, restaurant_heal
     duration_ratio = duration / max(expected_duration, 1)
 
     traffic_score = {"Low": 0.0, "Medium": 0.2, "High": 0.5, "Very High": 0.9}
-    vehicle_score = {"Motorcycle": 0.1, "Bicycle": 0.3, "Car": 0.15}
+    vehicle_score = {"Motorcycle": 0.1, "Bicycle": 0.3}
 
     risk = (
         0.35 * min(duration_ratio / 2, 1.0) +
@@ -553,7 +553,7 @@ print("Saving dataset...")
 
 orders_df = orders_df.drop(columns=["order_time_dt"])
 
-output_path = "/mnt/user-data/outputs/uae_food_delivery_750k.csv"
+output_path = "data/uae_food_delivery_750k.csv"
 orders_df.to_csv(output_path, index=False)
 
 print("\n" + "=" * 60)
