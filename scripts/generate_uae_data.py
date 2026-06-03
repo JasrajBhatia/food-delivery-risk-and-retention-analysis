@@ -319,7 +319,7 @@ def get_order_quality_risk(duration, distance, traffic, vehicle, restaurant_heal
     duration_ratio = duration / max(expected_duration, 1)
 
     traffic_score = {"Low": 0.0, "Medium": 0.2, "High": 0.5, "Very High": 0.9}
-    vehicle_score = {"Motorcycle": 0.1, "Bicycle": 0.3}
+    vehicle_score = {"Motorcycle": 0.1, "Bicycle": 0.3} 
 
     risk = (
         0.35 * min(duration_ratio / 2, 1.0) +
