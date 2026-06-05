@@ -30,28 +30,28 @@ Built using XGBoost.
 
 ## Tech Stack
 
-**Languages & Libraries**
-Python, PySpark
+- **Languages & Libraries:**
+Python, PySpark 
 
-**Cloud & Platform**
+- **Cloud & Platform:**
 Databricks, Apache Spark
 
-**Machine Learning**
+- **Machine Learning:**
 XGBoost, Random Forest, Scikit-learn
 
-**Deep Learning**
+- **Deep Learning:**
 LSTM (Long Short-Term Memory), TensorFlow/Keras
 
-**Experiment Tracking**
+- **Experiment Tracking:**
 MLflow
 
-**Model Explainability**
+- **Model Explainability:**
 SHAP (SHapley Additive Explanations)
 
-**Dashboard & Visualisation**
+- **Dashboard & Visualisation:**
 Streamlit, Matplotlib, Seaborn
 
-**Version Control**
+- **Version Control:**
 Git, GitHub
 
 ## Project Structure
