@@ -86,4 +86,16 @@ food-delivery-analysis/
 
 ## Status
 
-Work in progress. Feature engineering complete. Model training in progress.
+Work in progress. 
+
+**Completed:**
+- Data generation and ingestion
+- Exploratory data analysis and data quality checks
+- Feature engineering for all three models
+- Churn prediction model (XGBoost) with 94.1% accuracy and 0.979 ROC AUC
+
+**In Progress:**
+- Churn prediction using LSTM
+- Order quality risk scoring model
+- Restaurant health scoring model
+- Streamlit dashboard
