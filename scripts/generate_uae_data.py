@@ -335,7 +335,7 @@ def get_order_quality_risk(duration, distance, traffic, vehicle, restaurant_heal
 # ─────────────────────────────────────────
 print("Building user pool...")
 
-N_USERS = 25000
+N_USERS = 30000
 cuisine_list = list(CUISINES.keys())
 cuisine_probs = list(CUISINES.values())
 
@@ -351,6 +351,8 @@ for i in range(N_USERS):
     subscribed = np.random.choice([1, 0], p=[0.62, 0.38])
     cancel_rate = np.random.beta(1.5, 10)  # Most users rarely cancel
 
+    is_churner = np.random.choice([1, 0], p=[0.20, 0.80])
+    
     users.append({
         "user_id": f"USR{str(i+1).zfill(6)}",
         "city": city,
@@ -359,6 +361,7 @@ for i in range(N_USERS):
         "preferred_payment": payment,
         "is_subscribed": subscribed,
         "base_cancel_rate": cancel_rate,
+        "is_churner": is_churner,
     })
 
 users_df = pd.DataFrame(users)
@@ -395,7 +398,7 @@ restaurants_df = pd.DataFrame(restaurants)
 # ─────────────────────────────────────────
 print("Generating 750,000 orders (this will take a few minutes)...")
 
-N_ORDERS = 750000
+N_ORDERS = 850000
 BATCH_SIZE = 50000
 
 all_orders = []
@@ -435,6 +438,16 @@ for idx in range(N_ORDERS):
 
     cuisine = restaurant["cuisine"]
     hour = get_order_hour(cuisine, date)
+    user_is_churner = users_arr[user_indices[idx]]["is_churner"]
+
+    if user_is_churner == 1:
+        # Churners order mostly in the first 6 months
+        # and go silent in the last 3 months
+        if date.month >= 10:
+            continue
+        if date.month >= 7:
+            if np.random.random() > 0.15:
+                continue
     order_time = date.replace(hour=hour, minute=np.random.randint(0, 60))
 
     duration = get_delivery_duration(distance, traffic, vehicle)
@@ -511,40 +524,41 @@ orders_df["order_time_dt"] = pd.to_datetime(orders_df["order_time"])
 
 # For each user, look at last 30 days vs prior 30 days order frequency
 # Use a reference date of 2024-12-01 as the evaluation point
-EVAL_DATE = datetime(2024, 12, 1)
-WINDOW_END = EVAL_DATE
-WINDOW_MID = EVAL_DATE - timedelta(days=30)
-WINDOW_START = EVAL_DATE - timedelta(days=60)
 
-recent = orders_df[(orders_df["order_time_dt"] >= WINDOW_MID) &
-                   (orders_df["order_time_dt"] < WINDOW_END)]
-prior  = orders_df[(orders_df["order_time_dt"] >= WINDOW_START) &
-                   (orders_df["order_time_dt"] < WINDOW_MID)]
+# ── Redefine churn using a clear 6 month active, 3 month silent definition ──
 
-recent_counts = recent.groupby("user_id").size().rename("recent_orders")
-prior_counts  = prior.groupby("user_id").size().rename("prior_orders")
+orders_df["order_time_dt"] = pd.to_datetime(orders_df["order_time"])
 
-# Recent cancellations
-recent_cancels = (
-    recent[recent["order_status"] == "Cancelled"]
-    .groupby("user_id").size().rename("recent_cancels")
-)
+# Active period: January to June 2024
+ACTIVE_START = datetime(2024, 1, 1)
+ACTIVE_END   = datetime(2024, 6, 30)
 
-churn_df = pd.concat([recent_counts, prior_counts, recent_cancels], axis=1).fillna(0)
+# Silent period: October to December 2024
+SILENT_START = datetime(2024, 10, 1)
+SILENT_END   = datetime(2024, 12, 31)
 
-def churn_label(row):
-    if row["prior_orders"] > 0:
-        drop = (row["prior_orders"] - row["recent_orders"]) / row["prior_orders"]
-        if drop >= 0.40:
-            return 1
-    if row["recent_cancels"] >= 2:
-        return 1
-    return 0
+# Count orders in active period per user
+active_orders = orders_df[
+    (orders_df["order_time_dt"] >= ACTIVE_START) &
+    (orders_df["order_time_dt"] <= ACTIVE_END)
+].groupby("user_id").size().rename("active_orders")
 
-churn_df["churn_risk"] = churn_df.apply(churn_label, axis=1)
-churn_map = churn_df["churn_risk"].to_dict()
+# Count orders in silent period per user
+silent_orders = orders_df[
+    (orders_df["order_time_dt"] >= SILENT_START) &
+    (orders_df["order_time_dt"] <= SILENT_END)
+].groupby("user_id").size().rename("silent_orders")
 
+# Count cancellations across the full year per user
+total_cancels = orders_df[
+    orders_df["order_status"] == "Cancelled"
+].groupby("user_id").size().rename("total_cancels")
+
+# Churn label comes directly from user creation
+churn_map = {u["user_id"]: u["is_churner"] for u in users_arr}
 orders_df["churn_risk"] = orders_df["user_id"].map(churn_map).fillna(0).astype(int)
+
+print(f"Churn rate: {orders_df['churn_risk'].mean():.1%}")
 
 # ─────────────────────────────────────────
 # STEP 5 - FINALISE AND SAVE
