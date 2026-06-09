@@ -268,7 +268,8 @@ def apply_theme(fig, height=300, legend_h=False, title=""):
 @st.cache_data
 def load_main():
     import os
-    df = pd.read_csv(os.path.join(os.path.dirname(__file__), "uae_food_delivery_sample.csv"))
+    base = os.path.dirname(__file__)
+    df = pd.read_csv(os.path.join(base, "uae_food_delivery_sample.csv"))
     df["order_date"] = pd.to_datetime(df["order_date"])
     df["order_month"] = df["order_date"].dt.month
     MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
@@ -277,15 +278,21 @@ def load_main():
 
 @st.cache_data
 def load_users():
-    return pd.read_csv("user_features.csv")
+    import os
+    base = os.path.dirname(__file__)
+    return pd.read_csv(os.path.join(base, "user_features.csv"))
 
 @st.cache_data
 def load_orders():
-    return pd.read_csv("order_features.csv")
+    import os
+    base = os.path.dirname(__file__)
+    return pd.read_csv(os.path.join(base, "order_features.csv"))
 
 @st.cache_data
 def load_restaurants():
-    return pd.read_csv("restaurant_features.csv")
+    import os
+    base = os.path.dirname(__file__)
+    return pd.read_csv(os.path.join(base, "restaurant_features.csv"))
 
 @st.cache_data
 def train_churn(df_u):
