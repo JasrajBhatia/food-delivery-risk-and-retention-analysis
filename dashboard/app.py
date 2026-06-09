@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import os
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -266,7 +267,8 @@ def apply_theme(fig, height=300, legend_h=False, title=""):
 # ─────────────────────────────────────────────────────────────
 @st.cache_data
 def load_main():
-    df = pd.read_csv("uae_food_delivery_sample.csv")
+    import os
+    df = pd.read_csv(os.path.join(os.path.dirname(__file__), "uae_food_delivery_sample.csv"))
     df["order_date"] = pd.to_datetime(df["order_date"])
     df["order_month"] = df["order_date"].dt.month
     MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
