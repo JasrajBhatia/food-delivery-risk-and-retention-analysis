@@ -39,14 +39,28 @@ Food delivery platforms generate thousands of orders every day. Behind every ord
 ### XGBoost Churn Prediction — Confusion Matrix
 ![Confusion Matrix](assets/xgb_confusion_matrix.png)
 
+Out of 5,000 test users, the XGBoost model correctly identified 4,643 non-churners and 1,004 churners. It raised 156 false alarms (non-churners flagged as churn risk) and missed 197 actual churners. The model is highly conservative with false alarms, making it practical for targeted retention campaigns where unnecessary outreach has a real cost.
+
+---
+
 ### XGBoost Churn Prediction — SHAP Feature Importance
 ![SHAP Feature Importance](assets/xgb_shap_importance.png)
+
+SHAP analysis reveals that total orders is by far the strongest predictor of churn, followed by total spend and Ramadan orders. This makes intuitive sense. Churners place significantly fewer orders overall and disengage during high-activity periods like Ramadan, which loyal users participate in heavily. City, payment method, and top cuisine had almost no influence on churn, confirming that where a user lives or what they order matters far less than how often and how consistently they order.
+
+---
 
 ### LSTM Churn Prediction — Confusion Matrix
 ![LSTM Confusion Matrix](assets/lstm_confusion_matrix.png)
 
+The LSTM model achieved near-perfect results on the test set, correctly identifying 4,832 non-churners and 1,079 churners with zero false alarms and only 89 missed churners. These results reflect the inherently clean churn signal in synthetic data where churner behaviour follows a clear and consistent pattern. In production with real data, churn is driven by unpredictable human behaviour and competitive factors that would produce a more challenging and realistic result. See the note in notebook 04 for a full explanation.
+
+---
+
 ### LSTM Churn Prediction — Training Loss Curve
 ![LSTM Training Loss](assets/lstm_training_loss.png)
+
+The training loss curve shows healthy and stable model convergence. The loss drops sharply from 0.122 in the first epoch to below 0.01 by epoch 3, then continues declining gradually to 0.0013 by epoch 20. This smooth downward curve with no spikes or oscillations confirms the LSTM trained stably and converged properly. The steep initial drop followed by a gradual flattening is the textbook shape of a well-behaved deep learning training run.
 
 ## Tech Stack
 
