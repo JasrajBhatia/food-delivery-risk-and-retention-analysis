@@ -1,3 +1,7 @@
+import subprocess
+import sys
+subprocess.check_call([sys.executable, "-m", "pip", "install", "plotly>=5.18.0"])
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -7,10 +11,6 @@ from plotly.subplots import make_subplots
 from xgboost import XGBClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-
-import subprocess
-import sys
-subprocess.check_call([sys.executable, "-m", "pip", "install", "plotly"])
 
 # ─────────────────────────────────────────────────────────────
 # PAGE CONFIG
