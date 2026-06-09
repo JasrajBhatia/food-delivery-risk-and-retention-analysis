@@ -21,15 +21,18 @@ Food delivery platforms generate thousands of orders every day. Behind every ord
 
 **Restaurant Health Scoring** Evaluates every restaurant on the platform based on their cancellation rate, average delivery time, and order quality. Flags underperforming restaurants before they drive users away. Built using XGBoost.
 
+
 ## Key Results
 
 | Model | Problem | Accuracy | ROC AUC |
 |-------|---------|----------|---------|
 | XGBoost | Churn Prediction | 94.1% | 0.979 |
-| LSTM (PyTorch) | Churn Prediction | In Progress | In Progress |
+| LSTM (PyTorch) | Churn Prediction | 100.0%* | 1.000* |
 | XGBoost | Order Quality Risk | Coming Soon | Coming Soon |
 | Random Forest | Order Quality Risk | Coming Soon | Coming Soon |
 | XGBoost | Restaurant Health | Coming Soon | Coming Soon |
+
+*LSTM achieved perfect results due to the inherently clean churn signal in synthetic data. See notebook 04 for full explanation.
 
 ## Model Visualisations
 
@@ -38,6 +41,12 @@ Food delivery platforms generate thousands of orders every day. Behind every ord
 
 ### XGBoost Churn Prediction — SHAP Feature Importance
 ![SHAP Feature Importance](assets/xgb_shap_importance.png)
+
+### LSTM Churn Prediction — Confusion Matrix
+![LSTM Confusion Matrix](assets/lstm_confusion_matrix.png)
+
+### LSTM Churn Prediction — Training Loss Curve
+![LSTM Training Loss](assets/lstm_training_loss.png)
 
 ## Tech Stack
 
@@ -114,6 +123,16 @@ ood-delivery-analysis/
 
 The dataset is generated locally using `scripts/generate_uae_data.py` and is not tracked by Git due to file size. Clone the repo and run the script to regenerate the exact same dataset using seed 42.
 
+
+## Data Disclaimer
+
+The dataset used in this project is synthetic. UAE food delivery platforms such as Talabat, Deliveroo, and Careem do not publish their operational data publicly. Rather than using an irrelevant dataset from a different market, the dataset was generated from scratch using real UAE market statistics including demographic breakdowns, cuisine preferences, city and area population distributions, and ordering behaviour patterns documented in publicly available market research.
+
+The generation script is fully transparent, reproducible, and available in the `scripts/` folder. Running it with the fixed random seed of 42 produces the exact same 771,000 row dataset every time.
+
+The churn signal in the dataset is inherently cleaner than real world data because it was designed at user creation time. In production, churn is driven by unpredictable human behaviour, competitive factors, and external events that no synthetic dataset can fully replicate. This limitation is documented transparently in notebook 04.
+
+
 ## Data Dictionary
 
 | Column | Type | Description |
@@ -182,12 +201,12 @@ Work in progress.
 - Exploratory data analysis and data quality checks
 - Feature engineering for all three models
 - Churn prediction model (XGBoost) — 94.1% accuracy, 0.979 ROC AUC
-- Confusion matrix and SHAP feature importance for XGBoost churn model
+- Churn prediction model (LSTM PyTorch) — 100.0% accuracy, 1.000 ROC AUC
+- Confusion matrices, training loss curve, and SHAP feature importance charts
 
 **In Progress:**
-- Churn prediction using LSTM (PyTorch)
+- Order quality risk scoring (XGBoost and Random Forest)
 
 **Coming Soon:**
-- Order quality risk scoring (XGBoost and Random Forest)
 - Restaurant health scoring (XGBoost)
 - Streamlit dashboard
