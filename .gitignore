@@ -26,3 +26,8 @@ Thumbs.db
 # IDEs
 .vscode/
 .idea/
+
+# Exceptions
+!dashboard/user_features.csv
+!dashboard/order_features.csv
+!dashboard/restaurant_features.csv
