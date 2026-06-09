@@ -1,32 +1,43 @@
 # Food Delivery Analysis
 
-An end-to-end machine learning project analysing 750,000 food delivery orders across Dubai, Abu Dhabi, Sharjah and Ajman to solve three real business problems.
+![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)
+![PySpark](https://img.shields.io/badge/PySpark-3.5-orange?logo=apachespark)
+![Databricks](https://img.shields.io/badge/Databricks-Serverless-red?logo=databricks)
+![XGBoost](https://img.shields.io/badge/XGBoost-2.0-green)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.0-orange?logo=pytorch)
+![MLflow](https://img.shields.io/badge/MLflow-Tracking-blue?logo=mlflow)
+![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
+
+An end-to-end machine learning and deep learning project analysing 771,000 food delivery orders across Dubai, Abu Dhabi, Sharjah and Ajman to solve three real business problems using modern AI and data science techniques.
+
 
 ## What This Project Does
 
-Food delivery platforms generate thousands of orders every day. 
-Behind every order is a user who might stop ordering, a delivery 
-that might go wrong, and a restaurant that might be quietly 
-damaging the platform's reputation. This project uses machine 
-learning to detect all three problems before they escalate.
+Food delivery platforms generate thousands of orders every day. Behind every order is a user who might stop ordering, a delivery that might go wrong, and a restaurant that might be quietly damaging the platform's reputation. This project uses machine learning and deep learning to detect all three problems before they escalate.
 
-**Churn Prediction**
-Identifies users who are at risk of leaving the platform based 
-on their order history, cancellation behaviour, and spending 
-patterns. Built using XGBoost and LSTM to capture both static 
-features and sequential ordering behaviour over time.
+**Churn Prediction** Identifies users who are at risk of leaving the platform based on their order history, cancellation behaviour, and spending patterns. Built using XGBoost and LSTM to capture both static features and sequential ordering behaviour over time.
 
-**Order Quality Risk Scoring**
-Scores every order in real time based on how likely it is to 
-result in a poor delivery experience. Factors include traffic 
-conditions, delivery distance, driver availability, and 
-restaurant performance. Built using XGBoost and Random Forest.
+**Order Quality Risk Scoring** Scores every order based on how likely it is to result in a poor delivery experience. Factors include traffic conditions, delivery distance, driver availability, and restaurant performance. Built using XGBoost and Random Forest.
 
-**Restaurant Health Scoring**
-Evaluates every restaurant on the platform based on their 
-cancellation rate, average delivery time, and order quality. 
-Flags underperforming restaurants before they drive users away. 
-Built using XGBoost.
+**Restaurant Health Scoring** Evaluates every restaurant on the platform based on their cancellation rate, average delivery time, and order quality. Flags underperforming restaurants before they drive users away. Built using XGBoost.
+
+## Key Results
+
+| Model | Problem | Accuracy | ROC AUC |
+|-------|---------|----------|---------|
+| XGBoost | Churn Prediction | 94.1% | 0.979 |
+| LSTM (PyTorch) | Churn Prediction | In Progress | In Progress |
+| XGBoost | Order Quality Risk | Coming Soon | Coming Soon |
+| Random Forest | Order Quality Risk | Coming Soon | Coming Soon |
+| XGBoost | Restaurant Health | Coming Soon | Coming Soon |
+
+## Model Visualisations
+
+### XGBoost Churn Prediction — Confusion Matrix
+![Confusion Matrix](assets/xgb_confusion_matrix.png)
+
+### XGBoost Churn Prediction — SHAP Feature Importance
+![SHAP Feature Importance](assets/xgb_shap_importance.png)
 
 ## Tech Stack
 
@@ -40,7 +51,7 @@ Databricks, Apache Spark
 XGBoost, Random Forest, Scikit-learn
 
 - **Deep Learning:**
-LSTM (Long Short-Term Memory), TensorFlow/Keras
+LSTM (Long Short-Term Memory), PyTorch
 
 - **Experiment Tracking:**
 MLflow
@@ -57,10 +68,10 @@ Git, GitHub
 ## Project Structure
 
 ```
-food-delivery-analysis/
+ood-delivery-analysis/
 │
 ├── data/                          # Local data files (not tracked by Git)
-│   └── uae_food_delivery_750k.csv # 750,000 row UAE food delivery dataset
+│   └── uae_food_delivery_771k.csv # 771,000 row UAE food delivery dataset
 │
 ├── scripts/                       # Data generation scripts
 │   └── generate_uae_data.py       # Generates the synthetic UAE dataset
@@ -69,10 +80,14 @@ food-delivery-analysis/
 │   ├── 01_data_loading_and_ingestion.py   # Loads CSV and saves as Parquet
 │   ├── 02_eda_and_data_quality.py         # Exploratory analysis and data validation
 │   ├── 03_feature_engineering.py          # Builds feature tables for all three models
-│   ├── 04_churn_prediction.py             # XGBoost and LSTM churn model (coming soon)
+│   ├── 04_churn_prediction.py             # XGBoost and LSTM churn prediction models
 │   ├── 05_order_quality_risk.py           # XGBoost and Random Forest risk model (coming soon)
 │   ├── 06_restaurant_health_scoring.py    # XGBoost restaurant health model (coming soon)
 │   └── 07_model_evaluation.py             # Model comparison and SHAP explainability (coming soon)
+│
+├── assets/                        # Charts and visualisations for README
+│   ├── xgb_confusion_matrix.png
+│   └── xgb_shap_importance.png
 │
 ├── dashboard/                     # Streamlit business intelligence dashboard (coming soon)
 │
@@ -82,20 +97,97 @@ food-delivery-analysis/
 
 ## Dataset
 
-750,000 synthetic food delivery orders generated from real UAE market statistics. Covers 4 cities, 52 areas, 12 cuisine types, and a full year of ordering behaviour (Jan to Dec 2024).
+771,000 synthetic food delivery orders generated from real UAE market statistics. Every distribution and pattern in the dataset is grounded in publicly documented UAE food delivery market data.
+
+| Attribute | Detail |
+|-----------|--------|
+| Total Orders | 771,000 |
+| Unique Users | 30,000 |
+| Unique Restaurants | 2,000 |
+| Unique Drivers | 3,000 |
+| Cities | Dubai, Abu Dhabi, Sharjah, Ajman |
+| Areas | 52 across all four cities |
+| Cuisine Types | 12 (Indian, Arabic, Pakistani, American, Filipino, Chinese, Lebanese, Italian, Japanese, Thai, Mexican, Sri Lankan) |
+| Date Range | January to December 2024 |
+| Churn Rate | 11.9% at order level, 20% at user level |
+| Average Order Value | 124 AED |
+
+The dataset is generated locally using `scripts/generate_uae_data.py` and is not tracked by Git due to file size. Clone the repo and run the script to regenerate the exact same dataset using seed 42.
+
+## Data Dictionary
+
+| Column | Type | Description |
+|--------|------|-------------|
+| order_id | String | Unique identifier for each order |
+| user_id | String | Unique identifier for each user |
+| restaurant_id | String | Unique identifier for each restaurant |
+| restaurant_name | String | Name and area of the restaurant |
+| driver_id | String | Unique identifier for each driver |
+| order_time | Timestamp | Date and time the order was placed |
+| order_date | Date | Date the order was placed |
+| order_hour | Integer | Hour of the day the order was placed (0 to 23) |
+| is_weekend | Integer | 1 if the order was placed on Friday or Saturday, 0 otherwise |
+| is_ramadan_period | Integer | 1 if the order was placed during Ramadan 2024, 0 otherwise |
+| city | String | City where the order was delivered |
+| area | String | Specific area within the city |
+| cuisine | String | Cuisine type of the restaurant |
+| item_name | String | Name of the item ordered |
+| quantity | Integer | Number of items ordered |
+| unit_price_aed | Float | Price per item in AED |
+| delivery_fee_aed | Float | Delivery fee charged in AED |
+| total_price_aed | Float | Total order value including delivery fee in AED |
+| payment_method | String | Payment method used (Credit Card, Debit Card, Apple Pay, In-App Wallet) |
+| delivery_distance_km | Float | Distance from restaurant to delivery address in kilometres |
+| traffic_level | String | Traffic conditions at time of delivery (Low, Medium, High, Very High) |
+| driver_vehicle | String | Vehicle type used for delivery (Motorcycle, Bicycle) |
+| driver_availability | String | Driver availability status at time of order (Available, Busy, Unavailable) |
+| delivery_duration_mins | Float | Actual delivery time in minutes |
+| order_status | String | Final order status (Delivered, Cancelled, In Transit) |
+| user_subscription | Integer | 1 if the user has an active subscription, 0 otherwise |
+| restaurant_health_score | Float | Restaurant performance score between 0 and 1, higher is better |
+| order_quality_risk_score | Float | Risk score for poor delivery experience between 0 and 1, higher means more risk |
+| churn_risk | Integer | 1 if the user is at risk of churning, 0 otherwise |
+
+
+## How to Run
+
+**1. Clone the repository**
+```bash
+git clone https://github.com/JasrajBhatia/food-delivery-analysis.git
+cd food-delivery-analysis
+```
+
+**2. Install dependencies**
+```bash
+pip install pandas numpy faker scikit-learn xgboost shap torch mlflow streamlit
+```
+
+**3. Generate the dataset**
+```bash
+python3 scripts/generate_uae_data.py
+```
+This generates the full 771,000 row dataset in the `data/` folder. Takes approximately 3 to 5 minutes to complete.
+
+**4. Run the notebooks**
+
+Upload the dataset to your Databricks volume and run the notebooks in order from 01 through to 07. Each notebook loads from the Parquet files saved by the previous one.
+
 
 ## Status
 
-Work in progress. 
+Work in progress.
 
 **Completed:**
 - Data generation and ingestion
 - Exploratory data analysis and data quality checks
 - Feature engineering for all three models
-- Churn prediction model (XGBoost) with 94.1% accuracy and 0.979 ROC AUC
+- Churn prediction model (XGBoost) — 94.1% accuracy, 0.979 ROC AUC
+- Confusion matrix and SHAP feature importance for XGBoost churn model
 
 **In Progress:**
-- Churn prediction using LSTM
-- Order quality risk scoring model
-- Restaurant health scoring model
+- Churn prediction using LSTM (PyTorch)
+
+**Coming Soon:**
+- Order quality risk scoring (XGBoost and Random Forest)
+- Restaurant health scoring (XGBoost)
 - Streamlit dashboard
