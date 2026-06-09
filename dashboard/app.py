@@ -266,7 +266,7 @@ def apply_theme(fig, height=300, legend_h=False, title=""):
 # ─────────────────────────────────────────────────────────────
 @st.cache_data
 def load_main():
-    df = pd.read_csv("../data/uae_food_delivery_750k.csv")
+    df = pd.read_csv("uae_food_delivery_sample.csv")
     df["order_date"] = pd.to_datetime(df["order_date"])
     df["order_month"] = df["order_date"].dt.month
     MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
