@@ -6,10 +6,13 @@
 ![XGBoost](https://img.shields.io/badge/XGBoost-2.0-green)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.0-orange?logo=pytorch)
 ![MLflow](https://img.shields.io/badge/MLflow-Tracking-blue?logo=mlflow)
-![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
 
 An end-to-end machine learning and deep learning project analysing 771,000 food delivery orders across Dubai, Abu Dhabi, Sharjah and Ajman to solve three real business problems using modern data science and AI techniques.
 
+## Live Dashboard
+
+🔗 [View the live dashboard →](https://food-delivery-risk-and-retention-analysis.streamlit.app/)
 
 ## What This Project Does
 
@@ -93,6 +96,12 @@ Out of 400 test restaurants, the model correctly identified 301 healthy restaura
 Average order quality risk dominates as the strongest predictor of restaurant health, followed by average delivery duration and cancellation rate. This confirms that restaurant underperformance is driven primarily by operational factors rather than cuisine type or location. Distinct items served has almost zero influence on health score.
 
 
+### All Models — ROC Curves Comparison
+![ROC Curves All Models](assets/roc_curves_all_models.png)
+
+All models across all three problems produce ROC curves that hug the top left corner tightly, confirming strong performance throughout. The restaurant health curves are nearly identical across XGBoost, Logistic Regression, and SVM, confirming that restaurant health is driven by strong linear operational signals detectable by any model. XGBoost consistently leads or matches the best performer across all three problems.
+
+
 ## Tech Stack
 
 - **Languages & Libraries:**
@@ -124,27 +133,43 @@ Git, GitHub
 ```
 food-delivery-analysis/
 │
-├── data/                          # Local data files (not tracked by Git)
-│   └── uae_food_delivery_771k.csv # 771,000 row UAE food delivery dataset
+├── data/                                            # Local data files (not tracked by Git)
+│   └── uae_food_delivery_750k.csv                   # Full 771,000 row UAE food delivery dataset
 │
-├── scripts/                       # Data generation scripts
-│   └── generate_uae_data.py       # Generates the synthetic UAE dataset
+├── scripts/                                         # Data generation scripts
+│   └── generate_uae_data.py                         # Generates the synthetic UAE dataset
 │
-├── notebooks/                     # Databricks notebooks (in order of execution)
-│   ├── 01_data_loading_and_ingestion.py   # Loads CSV and saves as Parquet
-│   ├── 02_eda_and_data_quality.py         # Exploratory analysis and data validation
-│   ├── 03_feature_engineering.py          # Builds feature tables for all three models
-│   ├── 04_churn_prediction.py             # XGBoost and LSTM churn prediction models
-│   ├── 05_order_quality_risk.py           # XGBoost and Random Forest risk scoring
-│   ├── 06_restaurant_health_scoring.py    # XGBoost, Logistic Regression, SVM and Ensemble
-│   └── 07_model_evaluation.py             # Cross model comparison (coming soon)
+├── notebooks/                                       # Databricks notebooks (run in order)
+│   ├── 01_data_loading_and_ingestion.py             # Loads CSV and saves as Parquet
+│   ├── 02_eda_and_data_quality.py                   # Exploratory analysis and data validation
+│   ├── 03_feature_engineering.py                    # Builds feature tables for all three models
+│   ├── 04_churn_prediction.py                       # XGBoost and LSTM churn prediction models
+│   ├── 05_order_quality_risk.py                     # XGBoost and Random Forest risk scoring
+│   ├── 06_restaurant_health_scoring.py              # XGBoost, Logistic Regression, SVM and Ensemble
+│   └── 07_model_evaluation.py                       # Cross model comparison and ROC curves
 │
-├── assets/                        # Charts and visualisations for README
+├── dashboard/                                       # Streamlit dashboard
+│   ├── app.py                                       # Main dashboard application
+│   ├── uae_food_delivery_sample.csv                 # 50,000 row sample for dashboard
+│   ├── user_features.csv                            # User level features for churn prediction
+│   ├── order_features.csv                           # Order level features for risk scoring
+│   └── restaurant_features.csv                      # Restaurant level features for health scoring
 │
-├── dashboard/                     # Streamlit business intelligence dashboard (coming soon)
+├── assets/                                          # Charts and visualisations for README
+│   ├── xgb_confusion_matrix.png                     # XGBoost churn prediction confusion matrix
+│   ├── xgb_shap_importance.png                      # XGBoost churn prediction SHAP chart
+│   ├── lstm_confusion_matrix.png                    # LSTM churn prediction confusion matrix
+│   ├── lstm_training_loss.png                       # LSTM training loss curve
+│   ├── xgb_order_risk_confusion_matrix.png          # XGBoost order quality risk confusion matrix
+│   ├── xgb_order_risk_shap.png                      # XGBoost order quality risk SHAP chart
+│   ├── rf_order_risk_confusion_matrix.png           # Random Forest order quality risk confusion matrix
+│   ├── xgb_restaurant_health_confusion_matrix.png   # XGBoost restaurant health confusion matrix
+│   ├── xgb_restaurant_health_shap.png               # XGBoost restaurant health SHAP chart
+│   └── roc_curves_all_models.png                    # ROC curves comparison across all models
 │
-├── .gitignore                     # Excludes large data files from Git
-└── README.md                      # Project documentation
+├── requirements.txt                                 # Python dependencies for Streamlit Cloud
+├── .gitignore                                       # Excludes large data files from Git
+└── README.md                                        # Project documentation
 ```
 
 ## Dataset
@@ -251,7 +276,5 @@ Work in progress.
 - Restaurant health scoring (Logistic Regression) — 95.0% accuracy, 0.995 ROC AUC
 - Restaurant health scoring (SVM) — 92.8% accuracy, 0.992 ROC AUC
 - Restaurant health scoring (XGBoost + SVM Ensemble) — 97.0% accuracy, 0.994 ROC AUC
-
-**Coming Soon:**
 - Cross model evaluation notebook
 - Streamlit dashboard
