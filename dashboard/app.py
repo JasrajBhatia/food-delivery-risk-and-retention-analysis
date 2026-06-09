@@ -8,6 +8,10 @@ from xgboost import XGBClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 
+import subprocess
+import sys
+subprocess.check_call([sys.executable, "-m", "pip", "install", "plotly"])
+
 # ─────────────────────────────────────────────────────────────
 # PAGE CONFIG
 # ─────────────────────────────────────────────────────────────
