@@ -384,6 +384,20 @@ with st.spinner("Loading platform data..."):
     df_o    = load_orders()
     df_r    = load_restaurants()
 
+# Show disclaimer on first load
+if "disclaimer_shown" not in st.session_state:
+    st.session_state.disclaimer_shown = True
+    st.warning("""
+    ⚠️ **Data Disclaimer:** This dashboard uses synthetic data. 
+    UAE food delivery platforms do not publish operational data publicly. 
+    The dataset was generated using real UAE market statistics. 
+    Model predictions should not be used for real business decisions 
+    without validation on live production data.
+               
+    Model predictions are based on synthetic data and should not be used 
+    for real business decisions without validation on live production data.
+    """)
+
 # ─────────────────────────────────────────────────────────────
 # SIDEBAR
 # ─────────────────────────────────────────────────────────────
@@ -411,6 +425,32 @@ with st.sidebar:
         <br><br>
         <div style='color:#94A3B8;font-weight:600;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem;'>Stack</div>
         Python · PySpark · Databricks<br>MLflow · SHAP · Streamlit
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<hr style='border-color:#1A2540;margin:1.5rem 0;'>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style='background:#1C0505;border:1px solid #7F1D1D;border-radius:10px;padding:1rem;'>
+        <div style='color:#F87171;font-weight:700;font-size:0.82rem;
+                    letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem;'>
+            ⚠️ Disclaimer
+        </div>
+        <div style='font-size:0.78rem;color:#FCA5A5;line-height:1.7;'>
+            This dataset is <strong>synthetic</strong>. UAE food delivery 
+            platforms do not publish operational data publicly. The data 
+            was generated using real UAE market statistics including 
+            demographics, cuisine preferences, and ordering patterns.
+            <br><br>
+            Model predictions are based on synthetic data and should 
+            <strong>not</strong> be used for real business decisions 
+            without validation on live production data.
+            <br><br>
+            <a href='https://github.com/JasrajBhatia/food-delivery-risk-and-retention-analysis' 
+            target='_blank' 
+            style='color:#60A5FA;text-decoration:none;font-weight:600;'>
+                View full documentation →
+            </a>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
