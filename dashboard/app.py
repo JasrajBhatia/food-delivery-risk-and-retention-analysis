@@ -685,14 +685,14 @@ if page == "Platform Overview":
 
 
 # ═════════════════════════════════════════════════════════════
-# PAGE 2: CHURN INTELLIGENCE
+# PAGE 2: CHURN INTEL
 # ═════════════════════════════════════════════════════════════
-elif page == "Churn Intelligence":
+elif page == "Churn Intel":
 
     st.markdown("""
     <div class='page-hero'>
         <div class='page-hero-eyebrow'>Model 01 · XGBoost · 94.1% Accuracy · ROC AUC 0.979</div>
-        <h1>Churn Intelligence</h1>
+        <h1>Churn Intel</h1>
         <p class='page-hero-sub'>Identify users at risk of leaving the platform. Understand why they churn and act before they do.</p>
     </div>""", unsafe_allow_html=True)
 
