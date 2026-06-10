@@ -411,7 +411,7 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
     page = st.selectbox("NAVIGATE",
-        ["Platform Overview","Churn Intelligence","Order Quality Risk","Restaurant Health"],
+        ["Platform Overview","Churn Intel","Order Quality Risk","Restaurant Health"],
         label_visibility="visible")
 
     st.markdown("<hr style='border-color:#1A2540;margin:1.5rem 0;'>", unsafe_allow_html=True)
