@@ -262,8 +262,6 @@ Upload the dataset to your Databricks volume and run the notebooks in order from
 
 ## Status
 
-Work in progress.
-
 **Completed:**
 - Data generation and ingestion
 - Exploratory data analysis and data quality checks
